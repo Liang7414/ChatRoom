@@ -6,5 +6,6 @@ namespace ChatRoom.Application.Services.Interfaces
     {
         Task<UserRegisterResponseDTO> RegisterAsync(UserRegisterDTO registerDto, string ipAddress);
         Task<UserLoginResponseDTO> LoginAsync(UserLoginDTO loginDto, string ipAddress);
+        Task  LogoutAsync(int userId, string ipAddress);
     }
 }

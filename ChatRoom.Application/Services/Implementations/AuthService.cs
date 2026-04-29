@@ -21,7 +21,7 @@ public class AuthService : IAuthService
     private readonly IConfiguration _configuration;
 
 
-    public AuthService(IConfiguration configuration,IUserRepository userRepository, IMapper mapper, IUserLogService userLogService)
+    public AuthService(IConfiguration configuration, IUserRepository userRepository, IMapper mapper, IUserLogService userLogService)
     {
         _userRepository = userRepository;
         _mapper = mapper;
@@ -29,7 +29,7 @@ public class AuthService : IAuthService
         _userLogService = userLogService;
     }
 
-    public async Task<UserRegisterResponseDTO> RegisterAsync(UserRegisterDTO registerDto,string ipAddress)
+    public async Task<UserRegisterResponseDTO> RegisterAsync(UserRegisterDTO registerDto, string ipAddress)
     {
         // 檢查帳號是否重複
         if (await _userRepository.GetByUsernameAsync(registerDto.Name) != null)
@@ -53,7 +53,7 @@ public class AuthService : IAuthService
         await _userRepository.SaveChangesAsync();
 
         // 記錄註冊事件
-        await _userLogService.CreateLogAsync(user.Id, eventId:4, ipAddress, desc: "User registered and default profile created");
+        await _userLogService.CreateLogAsync(user.Id, eventId: 4, ipAddress, desc: "User registered and default profile created");
 
         return _mapper.Map<UserRegisterResponseDTO>(user);
     }
@@ -74,9 +74,9 @@ public class AuthService : IAuthService
 
         // 生成 JWT Token
         response.Token = GenerateJwtToken(user);
-        
+
         // 記錄登入事件
-        await _userLogService.CreateLogAsync(user.Id, eventId:1, ipAddress, desc:null);
+        await _userLogService.CreateLogAsync(user.Id, eventId: 1, ipAddress, desc: null);
 
         return response;
     }
@@ -102,4 +102,14 @@ public class AuthService : IAuthService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+    public async Task LogoutAsync(int userId, string ipAddress)
+    {
+        // 如果使用的是無狀態的 JWT，通常不需要在伺服器端做任何事情
+        // 但如果有實作黑名單或是 token 失效機制，可以在這裡將 token 加入黑名單
+
+        // 記錄登出事件
+        await _userLogService.CreateLogAsync(userId, eventId: 2, ipAddress, desc: null);
+    }
 }
+
+

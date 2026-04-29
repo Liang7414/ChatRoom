@@ -1,7 +1,9 @@
 ﻿using ChatRoom.Application.DTOs;
 using ChatRoom.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ChatRoom.API.Controllers
 {
@@ -44,6 +46,19 @@ namespace ChatRoom.API.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            // 從 Token 中提取 UserId
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? "Unknown";
+
+            await _authService.LogoutAsync(userId, ipAddress);
+
+            return Ok(new { message = "登出成功" });
         }
     }
 }
