@@ -401,3 +401,6 @@ FodyWeavers.xsd
 
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
+
+ChatRoom.API/appsettings.json
+ChatRoom.API/appsettings.Development.json
