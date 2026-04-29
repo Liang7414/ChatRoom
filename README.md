@@ -33,3 +33,7 @@ Mapping: AutoMapper
 Database: SQL Server
 
 Security: BCrypt.Net, JWT
+
+## 開發進度
+
+2026/4/29 完成使用者資料建檔，之後會正式加入傳訊息的功能，並加入Redis克服請求量龐大的問題
