@@ -16,8 +16,8 @@ namespace ChatRoom.Domain.Entities.UserAggregate
         public DateTime? UpdatedAt { get; set; }
 
         // 關聯：一對一 個人檔案
-        
-        public virtual UserProfile Profile { get; set; }=null!;
+
+        public virtual UserProfile Profile { get; set; } = null!;
         // 關聯：一對多 行為日誌
         public virtual ICollection<UserLog> Logs { get; set; } = new List<UserLog>();
     }

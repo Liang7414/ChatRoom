@@ -1,6 +1,7 @@
-﻿using ChatRoom.Domain.Entities.UserAggregate;
-using AutoMapper;
+﻿using AutoMapper;
 using ChatRoom.Application.DTOs;
+using ChatRoom.Domain.Entities;
+using ChatRoom.Domain.Entities.UserAggregate;
 
 namespace ChatRoom.Application.Mappings
 {
@@ -28,6 +29,13 @@ namespace ChatRoom.Application.Mappings
             // --- 行為日誌相關 ---
             CreateMap<UserLog, UserLogResponseDTO>()
                 .ForMember(dest => dest.EventName, opt => opt.MapFrom(src => src.EventType.EventType));
+
+            CreateMap<Message, MessageResponseDTO>()
+                .ForMember(dest => dest.MessageId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Nickname, opt => opt.MapFrom(src => src.UserProfile.NickName))
+                .ForMember(dest => dest.PortraitPhoto, opt => opt.MapFrom(src => src.UserProfile.PortraitPhoto))
+                // IsOwnMessage 的值由 Service 層邏輯決定，Mapping 時忽略
+                .ForMember(dest => dest.IsOwnMessage, opt => opt.Ignore());
         }
     }
 }

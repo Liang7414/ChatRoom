@@ -86,7 +86,8 @@ public class AuthService : IAuthService
         var claims = new List<Claim>
     {
         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-        new Claim(ClaimTypes.Name, user.Name)
+        new Claim(ClaimTypes.Name, user.Name),
+        new Claim("ProfileId", user.Profile.Id.ToString())
     };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
